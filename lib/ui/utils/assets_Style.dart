@@ -17,6 +17,12 @@ abstract class AssetsStyle {
   static const TextStyle normalGreyTextStyle = TextStyle(
       fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.grey);
 
+  static const TextStyle unselectedCalenderDayStyle = TextStyle(
+      fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.black);
+
+  static TextStyle selectedCalenderDayStyle =
+      unselectedCalenderDayStyle.copyWith(color: AppColors.primary);
+
   ///Dark Style
   static const TextStyle appBarDarkStyle = TextStyle(
       fontSize: 30, fontWeight: FontWeight.bold, color: AppColors.black);
