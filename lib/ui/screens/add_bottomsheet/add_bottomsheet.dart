@@ -1,27 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:project_todo/model/todo_dm.dart';
 import 'package:project_todo/ui/utils/assets_Style.dart';
 import 'package:project_todo/ui/utils/date_time_extension.dart';
 
 class AddBottomsheet extends StatefulWidget {
-  AddBottomsheet({super.key});
+  const AddBottomsheet({super.key});
 
   @override
   State<AddBottomsheet> createState() => _AddBottomsheetState();
 
-  static void Show(BuildContext context) {
+  static void show(BuildContext context) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        builder: (_) => Padding(
+        builder: (context) => Padding(
               padding: MediaQuery.of(context).viewInsets,
-              child: AddBottomsheet(),
+              child: const AddBottomsheet(),
             ));
   }
 }
 
 class _AddBottomsheetState extends State<AddBottomsheet> {
   DateTime selectedDate = DateTime.now();
-
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,14 +41,17 @@ class _AddBottomsheetState extends State<AddBottomsheet> {
           const SizedBox(
             height: 12,
           ),
-          const TextField(
-            decoration: InputDecoration(hintText: "Enter task title"),
+          TextField(
+            decoration: const InputDecoration(hintText: "Enter task title"),
+            controller: titleController,
           ),
           const SizedBox(
             height: 12,
           ),
-          const TextField(
-            decoration: InputDecoration(hintText: "Enter task description"),
+          TextField(
+            decoration:
+                const InputDecoration(hintText: "Enter task description"),
+            controller: descriptionController,
           ),
           const SizedBox(
             height: 12,
@@ -67,10 +73,34 @@ class _AddBottomsheetState extends State<AddBottomsheet> {
                 textAlign: TextAlign.center,
               )),
           const Spacer(),
-          ElevatedButton(onPressed: () {}, child: const Text("Add"))
+          ElevatedButton(
+              onPressed: () {
+                addTodoToFireStore();
+              },
+              child: const Text("Add"))
         ],
       ),
     );
+  }
+
+  void addTodoToFireStore() {
+    CollectionReference todosCollection =
+        FirebaseFirestore.instance.collection(TodoDm.collectionName);
+    DocumentReference doc = todosCollection.doc();
+    TodoDm todoDM = TodoDm(
+        id: doc.id,
+        title: titleController.text,
+        description: descriptionController.text,
+        date: selectedDate,
+        isDone: false);
+    doc.set(todoDM.toJson()).then((_) {
+      ///this callback is called when future is completed
+    }).onError((error, stackTrace) {
+      ///this callback is called when the throws an exception
+    }).timeout(const Duration(milliseconds: 500), onTimeout: () {
+      ///this callback is called after duration you in first argument
+      Navigator.pop(context);
+    });
   }
 
   void showMyDatePidker() async {

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:project_todo/ui/utils/assets_color.dart';
 
 abstract class AppTheme {
-  static ThemeData light = ThemeData(
+  static ThemeData lightMode = ThemeData(
       useMaterial3: false,
-      scaffoldBackgroundColor: AppColors.bgColor,
+      // scaffoldBackgroundColor: AppColors.bgColor,
       canvasColor: AppColors.White,
       colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.primary,
@@ -23,7 +23,7 @@ abstract class AppTheme {
 
   /// Dark mode
 
-  static ThemeData Dark = ThemeData(
+  static ThemeData darkMode = ThemeData(
       useMaterial3: false,
       scaffoldBackgroundColor: AppColors.bgDark,
       canvasColor: AppColors.black,

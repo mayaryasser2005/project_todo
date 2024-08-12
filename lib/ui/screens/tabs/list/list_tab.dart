@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:project_todo/model/todo_dm.dart';
+import 'package:project_todo/ui/screens/tabs/list/todo.dart';
 import 'package:project_todo/ui/utils/assets_Style.dart';
 import 'package:project_todo/ui/utils/assets_color.dart';
 import 'package:project_todo/ui/utils/date_time_extension.dart';
@@ -13,19 +16,45 @@ class ListTab extends StatefulWidget {
 
 class _ListTabState extends State<ListTab> {
   DateTime selecedCalenderDate = DateTime.now();
+  List<TodoDm> todosList = [];
+
   @override
   Widget build(BuildContext context) {
+    getTodoListFromFireStore();
     return Container(
       decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         children: [
           buildCalender(),
-          const Spacer(
+          Expanded(
             flex: 75,
+            child: ListView.builder(
+              itemCount: todosList.length,
+              itemBuilder: (context, index) {
+                return Todo(item: todosList[index]);
+              },
+            ),
           )
         ],
       ),
     );
+  }
+
+  void getTodoListFromFireStore() async {
+    CollectionReference todoCollection =
+        FirebaseFirestore.instance.collection(TodoDm.collectionName);
+    QuerySnapshot querySnapshot = await todoCollection.get();
+    List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+    todosList = documents.map((doc) {
+      Map<String, dynamic> Json = doc.data() as Map<String, dynamic>;
+      return TodoDm.fromJson(Json);
+    }).toList();
+    todosList = todosList
+        .where((todo) =>
+            todo.date.year == selecedCalenderDate.year &&
+            todo.date.month == selecedCalenderDate.month &&
+            todo.date.day == selecedCalenderDate.day)
+        .toList();
   }
 
   buildCalender() {

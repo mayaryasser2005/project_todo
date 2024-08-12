@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_todo/ui/screens/add_bottomsheet/add_bottomsheet.dart';
-import 'package:project_todo/ui/screens/tabs/list_tab.dart';
-import 'package:project_todo/ui/screens/tabs/settings_tab.dart';
+import 'package:project_todo/ui/screens/tabs/list/list_tab.dart';
+import 'package:project_todo/ui/screens/tabs/settings/settings_tab.dart';
 import 'package:project_todo/ui/utils/assets_color.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,7 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("To Do List")),
+      appBar: AppBar(
+        title: const Text("To Do List"),
+        backgroundColor: AppColors.primary,
+        centerTitle: true,
+      ),
+      backgroundColor: const Color.fromRGBO(221, 234, 217, 1.0),
+      body: tabs[currentIndex],
       floatingActionButton: buildFab(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: buildbottomNavigationBar(),
@@ -48,11 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   buildFab() => FloatingActionButton(
         onPressed: () {
-          AddBottomsheet.Show(context);
+          AddBottomsheet.show(context);
         },
         backgroundColor: AppColors.primary,
         shape: const StadiumBorder(
-            side: BorderSide(color: AppColors.White, width: 3)),
+            side: BorderSide(color: Colors.white, width: 3)),
         child: const Icon(Icons.add),
       );
 }
