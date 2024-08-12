@@ -23,7 +23,5 @@ plugins {
     id "org.jetbrains.kotlin.android" version "1.7.10" apply false
 }
 
-include ":app"
 
 
-apply from: "${settings.ext.flutterSdkPath}/packages/flutter_tools/gradle/app/plugins_loader.gradle"

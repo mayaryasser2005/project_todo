@@ -43,8 +43,11 @@ class _ListTabState extends State<ListTab> {
   void getTodoListFromFireStore() async {
     CollectionReference todoCollection =
         FirebaseFirestore.instance.collection(TodoDm.collectionName);
+
     QuerySnapshot querySnapshot = await todoCollection.get();
+
     List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
     todosList = documents.map((doc) {
       Map<String, dynamic> Json = doc.data() as Map<String, dynamic>;
       return TodoDm.fromJson(Json);

@@ -45,9 +45,7 @@ class _AddBottomsheetState extends State<AddBottomsheet> {
             decoration: const InputDecoration(hintText: "Enter task title"),
             controller: titleController,
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           TextField(
             decoration:
                 const InputDecoration(hintText: "Enter task description"),

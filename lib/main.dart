@@ -11,7 +11,8 @@ void main() async {
           appId: "1:780663306422:android:6f8a706aa6940e11d58e17",
           messagingSenderId: "todo-project-58062",
           projectId: "todo-project-58062"),
-      await FirebaseFirestore.instance.disableNetwork());
+  );
+  await FirebaseFirestore.instance.disableNetwork();
   runApp(const MyApp());
 }
 
